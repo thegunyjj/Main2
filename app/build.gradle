@@ -1,0 +1,42 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 21
+    buildToolsVersion '21.1.2'
+
+    defaultConfig {
+        applicationId "com.abc360.tool"
+        minSdkVersion 10
+        targetSdkVersion 21
+        versionCode 2
+        versionName "1.1"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFile '/Users/roya/AndroidStudioProjects/abc360_tool_main/proguard-android.txt'
+        }
+    }
+}
+
+repositories {
+    mavenCentral()
+    maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+}
+
+dependencies {
+    provided fileTree(include: ['*.jar', '*.so'], dir: 'libs')
+    compile 'com.android.support:appcompat-v7:21.+'
+    compile 'com.loopj.android:android-async-http:1.4.5'
+    compile 'com.nhaarman.listviewanimations:lib-core:3.1.0@aar'
+    compile 'com.nhaarman.listviewanimations:lib-manipulation:3.1.0@aar'
+    compile 'com.nhaarman.listviewanimations:lib-core-slh:3.1.0@aar'
+    compile files('libs/nineoldandroids-2.4.0.jar')
+    compile files('libs/gson-2.3.jar')
+    compile files('libs/GetuiExt-2.0.3.jar')
+    compile files('libs/GetuiSdk2.4.0.0.jar')
+    compile files('libs/armeabi/libgetuiext.so')
+    compile files('libs/armeabi-v7a/libgetuiext.so')
+    compile files('libs/x86/libgetuiext.so')
+    compile 'se.emilsjolander.stickylistheaders:library:2.1.0'
+}

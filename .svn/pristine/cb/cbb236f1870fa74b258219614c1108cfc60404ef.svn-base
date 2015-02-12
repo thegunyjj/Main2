@@ -1,0 +1,147 @@
+package com.abc360.tool.widgets;
+
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.abc360.tool.R;
+import com.abc360.tool.widgets.LazyImageLoader.ImageLoader;
+import com.abc360.tool.widgets.LazyImageLoader.ImageLoaderUtils;
+
+import java.util.List;
+
+public class LogAdapter extends BaseAdapter {
+
+    private LayoutInflater flater ;
+    private List<LogAdapterItem> mData;
+
+    private Context context;
+
+    OnCommentClickListener onCommentClickListener;
+    OnItemClickListener onClickListener;
+
+    public interface OnCommentClickListener{
+        void onClick(View view, int i);
+    }
+
+    public interface OnItemClickListener{
+        void onClick(View view, int i, LogAdapterItem item);
+    }
+
+    public LogAdapter(Context context, List<LogAdapterItem> data) {
+        this.flater = LayoutInflater.from(context);
+        this.context = context;
+        this.mData = data;
+    }
+
+    public void setOnCommentClickListener(OnCommentClickListener listener){
+        this.onCommentClickListener = listener;
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener){
+        this.onClickListener = listener;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return 0;
+    }
+
+    @Override
+    public int getCount() {
+        return mData.size();
+    }
+
+    @Override
+    public Object getItem(int i) {
+        return mData.get(i);
+    }
+
+    @Override
+    public long getItemId(int i) {
+        return i;
+    }
+
+    @Override
+    public int getViewTypeCount(){
+        return 1;
+    }
+
+    @Override
+    public View getView(final int i, View convertView, ViewGroup viewGroup) {
+        final ViewHolder holder;
+        if (convertView == null){
+
+            convertView = flater.inflate(R.layout.list_secd_item_item,viewGroup,false);
+            holder = new ViewHolder();
+
+            holder.textViewTeacher = (TextView)convertView.findViewById(R.id.item2_textview_teacher);
+            holder.textViewTextbook = (TextView)convertView.findViewById(R.id.item2_textview_textbooks);
+            holder.textViewTime = (TextView)convertView.findViewById(R.id.item2_textview_time);
+            holder.imageViewTeacherPicture = (ImageView)convertView.findViewById(R.id.item2_imageview_teacher_pic);
+            holder.imageViewPraiseState = (ImageView)convertView.findViewById(R.id.item2_imageview_praiseState);
+            convertView.setTag(holder);
+        }else {
+            holder = (ViewHolder)convertView.getTag();
+
+        }
+
+        final LogAdapterItem itemData = mData.get(i);
+        holder.textViewTeacher.setText(itemData.teacherName);
+        holder.textViewTextbook.setText(itemData.textbookName);
+        holder.textViewTime.setText(itemData.time);
+
+        ImageLoader imageLoader = ImageLoaderUtils.getImageLoader(context);
+        holder.imageViewTeacherPicture.setTag(itemData.teacherSrcLink);
+        imageLoader.DisplayImage(itemData.teacherSrcLink,holder.imageViewTeacherPicture);
+
+
+        if(itemData.praiseState == LogAdapterItem.STATE_GOOD){
+            holder.imageViewPraiseState.setPadding(12,12,12,12);
+            holder.imageViewPraiseState.setImageResource(R.drawable.icon_state_good);
+        }else if(itemData.praiseState == LogAdapterItem.STATE_BAD){
+            holder.imageViewPraiseState.setPadding(12,12,12,12);
+            holder.imageViewPraiseState.setImageResource(R.drawable.icon_state_bad);
+        }else {
+            if (itemData.canCom) {
+                holder.imageViewPraiseState.setPadding(0, 0, 0, 0);
+                holder.imageViewPraiseState.setImageResource(R.drawable.icon_state_none);
+            }else {
+                holder.imageViewPraiseState.setPadding(22,22,22,22);
+                holder.imageViewPraiseState.setImageResource(R.drawable.cant_com);
+            }
+        }
+
+        holder.imageViewPraiseState.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if ( (itemData.praiseState == LogAdapterItem.STATE_NULL) && itemData.canCom){
+                    if (onCommentClickListener != null) {
+                        onCommentClickListener.onClick(view, i);
+                    }
+                }
+            }
+        });
+        convertView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onClickListener.onClick(view, i, itemData);
+            }
+        });
+
+        return convertView;
+    }
+
+
+    public final class ViewHolder{
+        TextView textViewTeacher;
+        TextView textViewTextbook;
+        TextView textViewTime;
+        ImageView imageViewTeacherPicture;
+        ImageView imageViewPraiseState;
+    }
+}

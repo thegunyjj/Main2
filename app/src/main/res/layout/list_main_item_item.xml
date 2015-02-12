@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="24dp"
+    android:paddingRight="24dp"
+    android:paddingBottom="12dp"
+    android:paddingTop="12dp"
+    android:gravity="center">
+    <ProgressBar
+        android:visibility="invisible"
+        android:id="@+id/item1_pogressbar_loading"
+        android:layout_width="match_parent"
+        android:layout_height="72dp" />
+    <ImageView
+        android:id="@+id/item1_imageview_teacher_pic"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        android:src="@drawable/avatar_default"/>
+    <RelativeLayout
+        android:id="@+id/item1_relativelayout_data"
+        android:layout_toRightOf="@+id/item1_imageview_teacher_pic"
+        android:layout_toEndOf="@+id/item1_imageview_teacher_pic"
+        android:layout_width="match_parent"
+        android:layout_height="72dp">
+        <LinearLayout
+            android:paddingLeft="8dp"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:gravity="center">
+            <ImageView
+                android:scaleType="centerInside"
+                android:layout_width="24dp"
+                android:layout_height="36dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="6dp"
+                android:src="@drawable/ic_avater"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:textColor="#565656"
+                android:text=" "/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:textColor="#565656"
+                android:id="@+id/item1_textview_teacher"
+                android:text="教师名字"/>
+            </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:gravity="center"
+            android:paddingLeft="8dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true">
+            <ImageView
+                android:scaleType="centerInside"
+                android:layout_width="24dp"
+                android:layout_height="36dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="6dp"
+                android:id="@+id/item1_imageview_tool_icon"
+                android:src="@drawable/ic_skype"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:textColor="#565656"
+                android:text=" "/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/item1_textview_tool_id"
+                android:textSize="16sp"
+                android:textColor="#565656"
+                android:text="使用工具"/>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/item1_textview_time"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:padding="8dp"
+            android:text="预约的时间"
+            android:textColor="#888"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"/>
+
+        <ImageView
+            android:id="@+id/item1_imageview_textbook_NOT"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:padding="13dp"
+            android:src="@xml/point_gray"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+        <ImageView
+            android:id="@+id/item1_imageview_textbook_HAS"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:padding="13dp"
+            android:src="@xml/point_green"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+        </RelativeLayout>
+</RelativeLayout>

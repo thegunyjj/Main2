@@ -1,0 +1,338 @@
+package com.abc360.tool.Fragment;
+
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.v4.app.ListFragment;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.Log;
+import android.util.TypedValue;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.Toast;
+
+import com.abc360.tool.Activity.CheckTeacherActivity;
+import com.abc360.tool.Activity.CouresDetailActivity;
+import com.abc360.tool.Activity.LoginActivity;
+import com.abc360.tool.Activity.MainActivity;
+import com.abc360.tool.R;
+import com.abc360.tool.userdeta.APIs.ClassCanceler;
+import com.abc360.tool.userdeta.UserCourseBookedManager;
+import com.abc360.tool.userdeta.UserCourseIDManager;
+import com.abc360.tool.userdeta.UserCoursesDetailManager;
+import com.abc360.tool.userdeta.UserIDManager;
+import com.abc360.tool.userdeta.UserProfileManger;
+import com.abc360.tool.widgets.SelectedAdapter;
+import com.abc360.tool.widgets.SelectedAdapterItem;
+import com.nhaarman.listviewanimations.appearance.simple.AlphaInAnimationAdapter;
+import com.nhaarman.listviewanimations.appearance.simple.SwingBottomInAnimationAdapter;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.List;
+
+public class MainFragment extends ListFragment {
+
+    private SwipeRefreshLayout mSwipeLayout;
+
+    List<UserCourseBookedManager.BagForCourseBooked> datasRAW;
+    UserCourseBookedManager courseBookedManager;
+    SelectedAdapter selectedAdapter;
+
+    //SmoothProgressBar smoothProgressBar;
+
+    List<SelectedAdapterItem> listData;
+    RelativeLayout relativeLayoutRemind;
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        ViewGroup rootView = (ViewGroup) inflater.inflate(
+                R.layout.fragment_main, container, false);
+
+        return rootView;
+    }
+
+    @Override
+    public void onActivityCreated(Bundle bl){
+        super.onActivityCreated(bl);
+
+        LayoutInflater lif = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        this.getListView().addHeaderView(lif.inflate(R.layout.headerview, null));
+
+        relativeLayoutRemind = (RelativeLayout)getActivity().findViewById(R.id.fragment_remind);
+        //smoothProgressBar = (SmoothProgressBar)getActivity().findViewById(R.id.smoothProgressBar);
+
+
+        mSwipeLayout = (SwipeRefreshLayout) getActivity().findViewById(R.id.id_swipe_ly);
+        mSwipeLayout.setColorSchemeResources(R.color.main_color);
+        mSwipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                flishserCourseBooked();
+            }
+        });
+
+    }
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        setListAdapter(null);
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        listData = new ArrayList<SelectedAdapterItem>();
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+//        Intent intent = new Intent(getActivity().getApplicationContext(), CouresDetailActivity.class);
+//        intent.putExtra("id", "1106244");
+//        startActivity(intent);
+
+        TypedValue typed_value = new TypedValue();
+        getActivity().getTheme().resolveAttribute(android.support.v7.appcompat.R.attr.actionBarSize, typed_value, true);
+        mSwipeLayout.setProgressViewOffset(false, 0, getResources().getDimensionPixelSize(typed_value.resourceId));
+        mSwipeLayout.setRefreshing(true);
+
+        selectedAdapter = new SelectedAdapter(getActivity().getApplicationContext(), listData);
+        //setListAdapter(selectedAdapter);
+
+        AlphaInAnimationAdapter alphaInAnimationAdapter = new AlphaInAnimationAdapter(selectedAdapter);
+        alphaInAnimationAdapter.setAbsListView(getListView());
+
+        setListAdapter(alphaInAnimationAdapter);
+
+        getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                //Toast.makeText(getActivity(),data.get(i-1).Id,Toast.LENGTH_LONG).show();
+                if(i == 0)return;
+                String id = listData.get(i-1).Id;
+
+                if(id == null) {return;}
+
+                Intent intent = new Intent(getActivity().getApplicationContext(), CouresDetailActivity.class);
+                intent.putExtra("id", id);
+                startActivity(intent);
+
+
+            }
+        });
+
+        getListView().setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, final int i, long l) {
+                if(i == 0)return true;
+                if(listData.get(i-1).Id == null) {return true;}
+                //Log.e("t",i+"");
+                String[] items = new String[]{"查看老师详情","取消课程"};
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setTitle("更多");
+                builder.setItems(items,new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int t) {
+                        switch (t){
+                            case 0:{
+                                Intent intent = new Intent(getActivity(),CheckTeacherActivity.class);
+                                intent.putExtra("teacherID",listData.get(i-1).teacherId);
+                                intent.putExtra("teacherName",listData.get(i-1).teacherName);
+                                intent.putExtra("teacherSrcLink",listData.get(i-1).teacherSrcLink);
+                                startActivity(intent);
+                                break;}
+                            case 1:{
+                                new AlertDialog.Builder(getActivity())
+                                        .setTitle("取消课程")
+                                        .setMessage("确认取消这节课程？")
+                                        .setNeutralButton("返回",null)
+                                        .setPositiveButton("确认",new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialogInterface, int j) {
+                                                ClassCanceler classCanceler = new ClassCanceler(getActivity().getApplicationContext());
+                                                classCanceler.cancerClass(listData.get(i-1).Id,new ClassCanceler.OnCanceledListner() {
+                                                    @Override
+                                                    public void onSuccess() {
+                                                        Toast.makeText(getActivity(),"取消成功！",Toast.LENGTH_SHORT).show();
+                                                        flishserCourseBooked();
+                                                    }
+
+                                                    @Override
+                                                    public void onFailure(int errorCode) {
+                                                        if(errorCode == 0){
+                                                            Toast.makeText(getActivity(),"网络连接失败,请稍后再试",Toast.LENGTH_SHORT).show();
+                                                        }else {
+                                                            Toast.makeText(getActivity(),"无法取消课程,课程是可取消状态吗？",Toast.LENGTH_SHORT).show();
+                                                        }
+                                                    }
+                                                });
+                                            }
+                                        })
+                                        .show();
+                                break;}
+                        }
+                    }
+                });
+                builder.show();
+
+                return true;
+            }
+        });
+
+        if(new UserIDManager(getActivity().getApplicationContext()).hasID()) {
+
+            courseBookedManager = new UserCourseBookedManager(getActivity().getApplicationContext());
+
+
+            datasRAW = courseBookedManager.getBagForCourseBookeds();
+            List<SelectedAdapterItem> tempData = new ArrayList<SelectedAdapterItem>();
+
+            if(datasRAW != null) {
+                relativeLayoutRemind.setVisibility(View.INVISIBLE);
+                for (UserCourseBookedManager.BagForCourseBooked rawData : datasRAW) {
+                    SelectedAdapterItem item = new SelectedAdapterItem();
+                    item.type = SelectedAdapterItem.TYPE_ITEM;
+                    item.Id = rawData.id;
+                    item.teacherId = rawData.teacher.tid;
+                    item.teacherName = rawData.teacher.nickname;
+                    item.teacherSrcLink = rawData.teacher.pic;
+                    item.timeUNIX = rawData.begin_time;
+                    item.toolType = rawData.use_tool;
+                    item.QQ = rawData.teacher.qq;
+                    item.Skype = rawData.teacher.skype;
+                    item.hasTextbook = rawData.hasTextbook;
+
+                    SimpleDateFormat formatter = new SimpleDateFormat("HH:mm");
+                    item.time = formatter.format(new Date(Long.parseLong(rawData.begin_time) * 1000));
+                    tempData.add(item);
+
+                }
+                listData.clear();
+                listData.addAll(tempData);
+
+                //addDaysTitle(listData);
+                addDaysTitle2(listData);
+
+                selectedAdapter.notifyDataSetChanged();
+            }else {
+                relativeLayoutRemind.setVisibility(View.VISIBLE);
+            }
+
+
+            flishserCourseBooked();
+
+
+        }else {
+
+            Intent intent = new Intent(getActivity().getApplicationContext(), LoginActivity.class);
+            startActivity(intent);
+        }
+    }
+
+    private void flishserCourseBooked(){
+        //smoothProgressBar.setVisibility(View.VISIBLE);
+
+        courseBookedManager.loadUserCourseBooked(
+                new UserProfileManger(getActivity().getApplicationContext()).getId(),
+                new UserCourseBookedManager.OnLoadUserCourseBookedListener() {
+                    @Override
+                    public void onLoaded() {
+                        mSwipeLayout.setRefreshing(false);
+                        //smoothProgressBar.progressiveStop();
+                        //smoothProgressBar.setVisibility(View.INVISIBLE);
+                        List<UserCourseBookedManager.BagForCourseBooked> datasRAW = courseBookedManager.getBagForCourseBookeds();
+                        List<SelectedAdapterItem> tempData = new ArrayList<SelectedAdapterItem>();
+
+                        if(datasRAW != null) {
+                            relativeLayoutRemind.setVisibility(View.INVISIBLE);
+                            listData.clear();
+                            for (UserCourseBookedManager.BagForCourseBooked rawData : datasRAW) {
+                                SelectedAdapterItem item = new SelectedAdapterItem();
+                                item.type = SelectedAdapterItem.TYPE_ITEM;
+                                item.Id = rawData.id;
+                                item.teacherId = rawData.teacher.tid;
+                                item.teacherName = rawData.teacher.nickname;
+                                item.teacherSrcLink = rawData.teacher.pic;
+                                item.timeUNIX = rawData.begin_time;
+                                item.toolType = rawData.use_tool;
+                                item.QQ = rawData.teacher.qq;
+                                item.Skype = rawData.teacher.skype;
+                                item.hasTextbook = rawData.hasTextbook;
+
+                                SimpleDateFormat formatter = new SimpleDateFormat("HH:mm");
+                                item.time = formatter.format(new Date(Long.parseLong(rawData.begin_time) * 1000));
+                                tempData.add(item);
+
+                            }
+                            listData.addAll(tempData);
+
+                            //addDaysTitle(listData);
+                            addDaysTitle2(listData);
+
+                            selectedAdapter.notifyDataSetChanged();
+
+                        }else {
+                            listData.clear();
+                            relativeLayoutRemind.setVisibility(View.VISIBLE);
+                            selectedAdapter.notifyDataSetChanged();
+                        }
+
+                    }
+
+                    @Override
+                    public void onFailure() {
+                        mSwipeLayout.setRefreshing(false);
+                        //smoothProgressBar.progressiveStop();
+                        //smoothProgressBar.setVisibility(View.INVISIBLE);
+                    }
+                });
+
+    }
+
+    private void addDaysTitle2(List<SelectedAdapterItem> InputList){
+        Long nowDate = (System.currentTimeMillis() / 1000 + 28800)/ 86400 ;
+
+        Long tempDate = 0L;
+        for(int i =0; i<InputList.size();i++){
+            SelectedAdapterItem item = InputList.get(i);
+            Long itemDate = ((Long.parseLong(item.timeUNIX))+28800)/86400;
+
+            if(!itemDate.equals(tempDate)){
+                tempDate = itemDate;
+                if(itemDate < nowDate){
+                    InputList.add(i,newDaysTitle("以前"));
+                }else if(itemDate.equals(nowDate)){
+                    InputList.add(i,newDaysTitle("今天"));
+                }else if(itemDate-1 == nowDate){
+                    InputList.add(i,newDaysTitle("明天"));
+                }else if(itemDate-2 == nowDate){
+                    InputList.add(i,newDaysTitle("后天"));
+                }else{
+                    SimpleDateFormat formatterEE = new SimpleDateFormat("EE");
+                    InputList.add(i,newDaysTitle(formatterEE.format(itemDate * 86400 * 1000)));
+                }
+            }
+        }
+    }
+    private SelectedAdapterItem newDaysTitle(String title){
+        SelectedAdapterItem mData = new SelectedAdapterItem();
+        mData.type = SelectedAdapterItem.TYPE_DETA;
+        mData.deta = title;
+        return mData;
+    }
+
+}

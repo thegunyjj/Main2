@@ -1,0 +1,224 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.abc360.tool.Activity.ProfileActivity"
+    android:orientation="vertical"
+    android:background="#fff">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="#32a7ee">
+        <LinearLayout
+            android:paddingRight="24dp"
+            android:background="@drawable/layout_selector"
+            android:layout_centerVertical="true"
+            android:id="@+id/checkTeacher_button_back"
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="56dp">
+            <ImageView
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_margin="8dp"
+                android:padding="14dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_back"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:textColor="#fff"
+                android:text="老师详情"/>
+            </LinearLayout>
+        <Button
+            android:background="@drawable/layout_selector"
+            android:layout_centerVertical="true"
+            android:id="@+id/checkTeacher_bt_star"
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:textColor="#fff"
+            android:textSize="20sp"
+            android:text="收藏"/>
+        </RelativeLayout>
+
+
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="168dp">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="136dp"
+                android:background="@drawable/reservation_profile_backgrund"/>
+            <ImageView
+                android:layout_marginTop="18dp"
+                android:id="@+id/checkTeacher_iv_teacher"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:src="@drawable/avatar_default"
+                android:layout_centerHorizontal="true" />
+
+            <TextView
+                android:id="@+id/checkTeacher_tv_teacher_name"
+                android:layout_margin="2dp"
+                android:layout_marginBottom="18dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#fff"
+                android:textSize="22sp"
+                android:text="teacher name"
+                android:layout_below="@+id/checkTeacher_iv_teacher"
+                android:layout_centerHorizontal="true" />
+
+            <ImageView
+                android:id="@+id/checkTeacher_iv_playVoice"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:padding="20dp"
+                android:src="@drawable/ic_play"
+                android:background="@drawable/btn_selector_plus"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginRight="36dp" />
+
+        </RelativeLayout>
+
+
+
+        <LinearLayout
+            android:layout_marginTop="-28dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:paddingLeft="12dp"
+                    android:layout_height="40dp"
+                    android:gravity="center_vertical|right"
+                    android:layout_marginRight="12dp"
+                    android:textColor="#999"
+                    android:textSize="18sp"
+                    android:text="已被收藏:"/>
+                <TextView
+                    android:id="@+id/checkTeacher_tv_favorites"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:textColor="#686868"
+                    android:textSize="18sp"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:textColor="#686868"
+                    android:text="次"
+                    android:textSize="16sp"/>
+            </LinearLayout>
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#eee" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:paddingLeft="12dp"
+                    android:layout_height="40dp"
+                    android:gravity="center_vertical|right"
+                    android:layout_marginRight="12dp"
+                    android:textColor="#999"
+                    android:textSize="18sp"
+                    android:text="擅长课程:"/>
+                <TextView
+                    android:id="@+id/checkTeacher_tv_courses"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="16dp"
+                    android:gravity="center_vertical"
+                    android:textColor="#686868"
+                    android:textSize="18sp"/>
+            </LinearLayout>
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#eee" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:paddingLeft="12dp"
+                    android:layout_height="40dp"
+                    android:gravity="center_vertical|right"
+                    android:layout_marginRight="12dp"
+                    android:textColor="#999"
+                    android:textSize="18sp"
+                    android:text="中文水平:"/>
+                <TextView
+                    android:id="@+id/checkTeacher_tv_chinese"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:textColor="#686868"
+                    android:textSize="18sp"/>
+            </LinearLayout>
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#eee" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:paddingLeft="12dp"
+                    android:layout_height="40dp"
+                    android:gravity="center_vertical|right"
+                    android:layout_marginRight="12dp"
+                    android:textColor="#999"
+                    android:textSize="18sp"
+                    android:text="教师特征:"/>
+                <TextView
+                    android:id="@+id/checkTeacher_tv_others"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="16dp"
+                    android:gravity="center_vertical"
+                    android:textColor="#686868"
+                    android:textSize="18sp"/>
+            </LinearLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>
+
+</LinearLayout>

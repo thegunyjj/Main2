@@ -1,0 +1,313 @@
+package com.abc360.tool.Activity;
+
+import android.app.DatePickerDialog;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.os.Build;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentActivity;
+import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
+import android.view.KeyEvent;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.DatePicker;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.abc360.tool.Fragment.HistoryFragment;
+import com.abc360.tool.Fragment.MainFragment;
+import com.abc360.tool.Fragment.NavFragment;
+import com.abc360.tool.R;
+import com.abc360.tool.userdeta.APIs.GetuiIdSeter;
+import com.abc360.tool.userdeta.AppFirstStartManager;
+import com.abc360.tool.userdeta.UserIDManager;
+import com.abc360.tool.userdeta.UserLoginManager;
+import com.abc360.tool.userdeta.UserProfileManger;
+import com.igexin.sdk.PushManager;
+import com.igexin.sdk.Tag;
+
+import java.util.Calendar;
+
+import static android.widget.Toast.LENGTH_LONG;
+
+
+public class MainActivity extends FragmentActivity {
+
+    private DrawerLayout navDrawerLayout;
+    private FrameLayout navDisplayLayout;
+
+    FragmentManager fragmentManager;
+    MainFragment mainFragment;
+    NavFragment navFragment;
+    HistoryFragment historyFragment;
+    long exitTime = 0;
+
+    LinearLayout buttonSwichFm;
+    ImageView imageButtondate;
+    TextView text;
+
+    ImageView imageButton;
+    int fmId = 0;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        //添加主界面与侧边栏的fragment
+        mainFragment = new MainFragment();
+        navFragment = new NavFragment();
+        historyFragment = new HistoryFragment();
+        fragmentManager = getSupportFragmentManager();
+
+        fragmentManager.beginTransaction().replace(R.id.navigation_fragement_frame,navFragment).commit();
+
+        buttonSwichFm = (LinearLayout)findViewById(R.id.mainactivity_switch);
+        text = (TextView)findViewById(R.id.mainactivity_switch_text);
+
+        //添加
+        imageButton = (ImageView)findViewById(R.id.mainactivity_add);
+        imageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                switch (fmId) {
+                    case 0:
+                        Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
+                        startActivity(intent);
+                        break;
+                    case 1:
+                        if (historyFragment != null){
+                            historyFragment.backToday();
+                        }
+                        break;
+                }
+            }
+        });
+
+        //日期选择
+        imageButtondate = (ImageView)findViewById(R.id.toolbar_button_date);
+        imageButtondate.setOnClickListener(new View.OnClickListener() {
+            Calendar c = Calendar.getInstance();
+            @Override
+            public void onClick(View view) {
+                new DatePickerDialog(
+                        MainActivity.this,
+                        new DatePickerDialog.OnDateSetListener() {
+                            @Override
+                            public void onDateSet(DatePicker datePicker, int i, int i2, int i3) {
+//                                if (dateTwo){
+//                                    historyFragment.flishByDate( i+ (i2 > 10 ? "" : "0") + i2 + (i3 > 10 ? "" : "0")+i3 );
+//                                    dateTwo = false;
+//                                }else {
+//                                    dateTwo = true;
+//                                }
+                                i2 = i2 + 1;
+                                historyFragment.flishByDate( i+ (i2>=10?"":"0") + i2 + (i3>=10?"":"0") + i3 ); //如果少0就补零 (yyyyMMdd结构)
+                            }
+                        },
+                        c.get(Calendar.YEAR),c.get(Calendar.MONTH),c.get(Calendar.DAY_OF_MONTH)-1).show();
+            }
+        });
+
+        //侧边栏响应
+        navDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
+        //navDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
+        navDisplayLayout = (FrameLayout)findViewById(R.id.navigation_fragement_frame);
+        LinearLayout buttonShowNav = (LinearLayout) findViewById(R.id.toolbar_ll_show_nav);
+        buttonShowNav.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                navDrawerLayout.openDrawer(navDisplayLayout);
+            }
+        });
+        navFragment.setOnItemClickListener(new NavFragment.OnItemClickListener() {
+            @Override
+            public void onItemClick(boolean finish) {
+                navDrawerLayout.closeDrawer(navDisplayLayout);
+                if (finish) {
+                    MainActivity.this.finish();
+                }
+            }
+        });
+
+        //选项按钮响应
+        final ImageView buttonOptions = (ImageView) findViewById(R.id.toolbar_button_options);
+        buttonOptions.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(),SettingActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        //切换主界面
+
+        buttonSwichFm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showPopupWindowSwich(buttonSwichFm,text);
+            }
+        });
+
+        fragmentManager.beginTransaction().replace(R.id.main_frame, mainFragment).commit();
+        fmId = 0;
+        text.setText("已预约课程");
+        imageButton.setImageResource(R.drawable.ic_plus);
+        imageButtondate.setVisibility(View.INVISIBLE);
+
+
+        PushManager.getInstance().initialize(getApplicationContext());
+
+        if (PushManager.getInstance().getClientid(getApplicationContext())!=null) {
+            Tag getuiTagOS = new Tag();
+            Tag getuiTagOSVer = new Tag();
+            Tag getuiTagBrand = new Tag();
+            Tag getuiTagDevice = new Tag();
+            getuiTagOS.setName(     "OS:"                 + "Android");
+            getuiTagOSVer.setName(  "Version:"            + "Android"+ Build.VERSION.RELEASE);
+            getuiTagBrand.setName(  "Brand:"              + Build.BRAND);
+            getuiTagDevice.setName( "Device:"             + Build.PRODUCT);
+
+            Tag[] getuiTags = {getuiTagOS,getuiTagOSVer,getuiTagBrand,getuiTagDevice};
+
+            Log.i("getuiTag",PushManager.getInstance().setTag(getApplicationContext(), getuiTags)+"");
+        }
+
+        AppFirstStartManager appFirstStartManager = new AppFirstStartManager(getApplicationContext());
+        if (appFirstStartManager.isFristStartState(true)){
+            appFirstStartManager.setIsFristStartState(false);
+
+            Intent intent = new Intent(getApplicationContext(),FirstStartActivity.class);
+            startActivity(intent);
+            finish();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        //登陆
+        UserIDManager IDManager = new UserIDManager(getApplicationContext());
+        if (IDManager.hasID()){
+            final UserLoginManager loginManager = new UserLoginManager(getBaseContext());
+            loginManager.setLoginListener(new UserLoginManager.LoginListener() {
+                @Override
+                public void onSuccess(byte[] response) {
+                    UserProfileManger profileManger = new UserProfileManger(getApplicationContext());
+                    profileManger.saveProfileFromJson(new String(response));
+
+                    //Log.e("0!@121",getSharedPreferences("setting",MODE_PRIVATE).getInt("push",1)+"");
+
+                    if (getSharedPreferences("setting",MODE_PRIVATE).getInt("push",1) == 1) {
+                        String thisClientid = PushManager.getInstance().getClientid(getApplicationContext());
+                        String sarverClientid = profileManger.getGtId();
+
+                        if (!sarverClientid.equals(thisClientid)) {
+                            new GetuiIdSeter(getApplicationContext()).setGetuiId(
+                                    new UserProfileManger(getApplicationContext()).getId(),
+                                    thisClientid,
+                                    null);
+                        }
+                    }
+
+                    //Log.e("登陆",new String(response));
+                    navFragment.onResume();
+                }
+                @Override
+                public void onFailure(int ERROR_TYPE) {
+
+                    if (ERROR_TYPE == UserLoginManager.ERROR_ID){
+                        Toast.makeText(getApplicationContext(),"登录失效，请重新登陆", LENGTH_LONG).show();
+                        Intent it = new Intent(getApplicationContext(),LoginActivity.class);
+                        startActivity(it);
+                    }else {
+                        //Toast.makeText(getApplicationContext(),"网络链接失败，请稍后再试", LENGTH_LONG).show();
+                    }
+                }
+            });
+
+            loginManager.login(IDManager.getLoginParams());
+
+        }else {
+
+            Intent it = new Intent(this,LoginActivity.class);
+            startActivity(it);
+            this.finish();
+        }
+
+    }
+
+    private void showPopupWindowOption(View view) {
+        final View popupViewOption = getLayoutInflater().inflate(R.layout.popup_window,null);
+        final PopupWindow buttonPopupWindowOptions = new PopupWindow(popupViewOption, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
+        buttonPopupWindowOptions.setTouchable(true);
+        buttonPopupWindowOptions.setOutsideTouchable(true);
+        buttonPopupWindowOptions.setBackgroundDrawable(new BitmapDrawable(getResources(), (Bitmap) null));
+        final float dp = getResources().getDisplayMetrics().density;
+        buttonPopupWindowOptions.showAsDropDown(view,(int)(-48*dp),(int)(-48*dp));
+    }
+
+    private void showPopupWindowSwich(View view, final TextView textView) {
+        final View popupViewSwich = getLayoutInflater().inflate(R.layout.popup_window_swich,null);
+        final PopupWindow buttonPopupWindowSwich = new PopupWindow(popupViewSwich, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
+        buttonPopupWindowSwich.setTouchable(true);
+        buttonPopupWindowSwich.setOutsideTouchable(true);
+        buttonPopupWindowSwich.setBackgroundDrawable(new BitmapDrawable(getResources(), (Bitmap) null));
+        TextView buttonPopupSwich0 = (TextView)popupViewSwich.findViewById(R.id.popup_swich_0);
+        TextView buttonPopupSwich1 = (TextView)popupViewSwich.findViewById(R.id.popup_swich_1);
+        final float dp = getResources().getDisplayMetrics().density;
+        buttonPopupSwich0.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                fragmentManager.beginTransaction().replace(R.id.main_frame, mainFragment).commit();
+                fmId = 0;
+                buttonPopupWindowSwich.dismiss();
+                textView.setText("已预约课程");
+                imageButton.setImageResource(R.drawable.ic_plus);
+                imageButtondate.setVisibility(View.INVISIBLE);
+            }
+        });
+        buttonPopupSwich1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                fragmentManager.beginTransaction().replace(R.id.main_frame, historyFragment).commit();
+                fmId = 1;
+                buttonPopupWindowSwich.dismiss();
+                textView.setText("历史记录");
+                imageButton.setImageResource(R.drawable.ic_history_today);
+                imageButtondate.setVisibility(View.VISIBLE);
+            }
+        });
+        buttonPopupWindowSwich.showAsDropDown(view,0,(int)(-48*dp));
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+        if (keyCode == KeyEvent.KEYCODE_BACK){
+
+            if(System.currentTimeMillis()-exitTime>2000){
+                Toast.makeText(this, "再按一次返回键退出", Toast.LENGTH_SHORT).show();
+                exitTime=System.currentTimeMillis();
+            }
+            else{
+                Intent MyIntent = new Intent(Intent.ACTION_MAIN);
+                MyIntent.addCategory(Intent.CATEGORY_HOME);
+                startActivity(MyIntent);
+                this.finish();
+            }
+        }
+        return false;
+    }
+
+}

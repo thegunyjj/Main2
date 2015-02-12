@@ -1,0 +1,23 @@
+<resources>
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light">
+        <item name="android:windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="colorPrimary">#2E9CDE</item>
+        <item name="colorPrimaryDark">#2e9cde</item>
+        <item name="colorControlNormal">#addbf8</item>
+        <item name="colorControlActivated">#3399ff</item>
+        <item name="colorControlHighlight">#aaa</item>
+    </style>
+
+    <style name="ActivityTheme" parent="Theme.AppCompat.Light">
+        <item name="android:windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+    </style>
+
+    <style name="MyCheckBox" parent="@android:style/Widget.CompoundButton.CheckBox">
+
+        <item name="android:button">@drawable/checkbox_selector</item>
+    </style>
+
+</resources>

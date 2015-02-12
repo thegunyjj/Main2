@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="4dp"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="19sp"
+        android:text="22:00-51:00"
+        android:layout_centerVertical="true"
+        android:id="@+id/binding_item_item_begintime" />
+
+    <TextView
+        android:layout_marginLeft="8dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="13sp"
+        android:text="生效日期：xxxxx"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/binding_item_item_begintime"
+        android:layout_toEndOf="@+id/binding_item_item_begintime"
+        android:id="@+id/binding_item_item_justtime" />
+
+    <Button
+        android:id="@+id/binding_item_item_btn_cancel"
+        android:stateListAnimator="@null"
+        android:layout_width="56sp"
+        android:layout_height="28sp"
+        android:textColor="#fff"
+        android:text="取消"
+        android:background="@drawable/btn_selector"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+</RelativeLayout>

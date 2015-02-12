@@ -1,0 +1,237 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.abc360.tool.Activity.ProfileActivity"
+    android:orientation="vertical"
+    android:background="#f6f6f6">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="#32a7ee">
+        <LinearLayout
+            android:paddingRight="24dp"
+            android:background="@drawable/layout_selector"
+            android:layout_centerVertical="true"
+            android:id="@+id/button_back"
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="56dp">
+            <ImageView
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_margin="8dp"
+                android:padding="14dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_back"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:textColor="#fff"
+                android:text="设置"/>
+            </LinearLayout>
+        </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_marginTop="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
+            android:gravity="center_vertical"
+            android:textColor="#989898"
+            android:textSize="14sp"
+            android:text="基本"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="#fff">
+            <RelativeLayout
+                android:background="@drawable/layout_selector"
+                android:id="@+id/setting_rl_push"
+                android:layout_width="match_parent"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:layout_height="48dp">
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_remind"
+                    android:id="@+id/imageView1" />
+                <TextView
+                    android:paddingLeft="12dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:textColor="#686868"
+                    android:textSize="18sp"
+                    android:text="上课提醒"
+                    android:layout_alignParentTop="true"
+                    android:layout_toRightOf="@+id/imageView1"
+                    android:layout_toEndOf="@+id/imageView1" />
+
+                <!--<com.abc360.tool.widgets.SwitchButton-->
+                    <!--android:id="@+id/setting_sw_push"-->
+                    <!--android:layout_width="48dp"-->
+                    <!--android:layout_height="24dp"-->
+                    <!--android:src="@drawable/switch_true"-->
+                    <!--android:layout_centerVertical="true"-->
+                    <!--android:layout_alignParentRight="true"-->
+                    <!--android:layout_alignParentEnd="true" />-->
+                <CheckBox
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:id="@+id/setting_sw_push"
+                    android:button="@null"
+                    android:background="@drawable/check_selector"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true" />
+
+            </RelativeLayout>
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
+                android:background="#fff"
+                android:src="#eee"/>
+        <RelativeLayout
+            android:background="@drawable/layout_selector"
+            android:id="@+id/setting_rl_clean"
+            android:layout_width="match_parent"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:layout_height="48dp">
+            <ImageView
+                android:layout_width="24dp"
+                android:padding="5dp"
+                android:layout_height="match_parent"
+                android:src="@drawable/about_del"
+                android:id="@+id/imageView2" />
+            <TextView
+                android:paddingLeft="12dp"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:textColor="#686868"
+                android:textSize="18sp"
+                android:text="清理缓存"
+                android:layout_alignParentTop="true"
+                android:layout_toRightOf="@+id/imageView2"
+                android:layout_toEndOf="@+id/imageView2" />
+
+            </RelativeLayout>
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
+            android:gravity="center_vertical"
+            android:textColor="#989898"
+            android:textSize="14sp"
+            android:text="其他"/>
+        <LinearLayout
+            android:orientation="vertical"
+            android:background="#fff"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:id="@+id/setting_ll_check_new"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@drawable/layout_selector">
+
+                <ImageView
+                    android:padding="5dp"
+                    android:layout_width="24dp"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_check_update" />
+                <TextView
+                    android:paddingLeft="12dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:textColor="#686868"
+                    android:textSize="18sp"
+                    android:text="检查更新"/>
+
+            </LinearLayout>
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
+                android:background="#fff"
+                android:src="#eee"/>
+            <LinearLayout
+                android:id="@+id/setting_ll_feedback"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@drawable/layout_selector">
+
+                <ImageView
+                    android:padding="4dp"
+                    android:layout_width="24dp"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/about_opinion" />
+                <TextView
+                    android:paddingLeft="12dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:textColor="#686868"
+                    android:textSize="18sp"
+                    android:text="意见反馈"/>
+
+                </LinearLayout>
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
+                android:background="#fff"
+                android:src="#eee"/>
+            <LinearLayout
+                android:id="@+id/setting_ll_about"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@drawable/layout_selector">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:padding="4dp"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/about_us" />
+                <TextView
+                    android:paddingLeft="12dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:textColor="#686868"
+                    android:textSize="18sp"
+                    android:text="关于伯瑞英语"/>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+    </ScrollView>
+</LinearLayout>

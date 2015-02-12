@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f6f6f6">
+
+    <LinearLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="#03a9f5">
+        <ImageButton
+            android:id="@+id/navigation_button_back"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/ic_back"
+            android:scaleType="fitCenter"
+            android:padding="13dp"
+            android:layout_margin="4dp"
+            android:background="@drawable/layout_selector"/>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:paddingTop="12dp"
+            android:paddingLeft="24dp"
+            android:paddingRight="24dp"
+            android:paddingBottom="24dp">
+            <ImageView
+                android:layout_width="65dp"
+                android:layout_height="65dp"
+                android:padding="1dp"
+                android:id="@+id/user_avatar"
+                android:src="@drawable/avatar_default"
+                android:background="@xml/point_white"/>
+            <LinearLayout
+                android:padding="12dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center_vertical">
+                <TextView
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/user_name"
+                    android:text="username"
+                    android:textSize="22sp"
+                    android:textColor="#fff"/>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#fff"
+                        android:text="英语水平 : "/>
+                    <TextView
+                        android:id="@+id/user_level"
+                        android:padding="2dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=" Level0 "
+                        android:background="@drawable/text_back_ovel"
+                        android:textColor="#0276aa"/>
+                    </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/nav_tv_acoin"
+            android:layout_width="match_parent"
+            android:paddingLeft="24dp"
+            android:gravity="center_vertical"
+            android:layout_height="32dp"
+            android:textColor="#efff"
+            android:background="#4bbbff"
+            android:textSize="14sp"
+            android:text="剩余A币 0 个"/>
+
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#ffffff">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <LinearLayout
+                android:background="@drawable/layout_selector"
+                android:id="@+id/button_nav_profile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="24dp"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="23dp"
+                    android:layout_height="56dp"
+                    android:src="@drawable/ic_avater"/>
+                <TextView
+                    android:padding="8dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:textColor="#545454"
+                    android:text="个人信息"/>
+                </LinearLayout>
+            <ImageView
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:src="#ddd"/>
+            <LinearLayout
+                android:background="@drawable/layout_selector"
+                android:id="@+id/button_nav_favorits"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="24dp"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="23dp"
+                    android:layout_height="56dp"
+                    android:src="@drawable/ic_favs"/>
+                <TextView
+                    android:padding="8dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:textColor="#545454"
+                    android:text="老师收藏"/>
+            </LinearLayout>
+            <ImageView
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:src="#ddd"/>
+            <LinearLayout
+                android:background="@drawable/layout_selector"
+                android:id="@+id/button_nav_afl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="24dp"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="23dp"
+                    android:layout_height="56dp"
+                    android:src="@drawable/ic_afl"/>
+                <TextView
+                    android:padding="8dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:textColor="#545454"
+                    android:text="请假记录"/>
+            </LinearLayout>
+            <ImageView
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:src="#ddd"/>
+            <LinearLayout
+                android:background="@drawable/layout_selector"
+                android:id="@+id/button_nav_logout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="24dp"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="23dp"
+                    android:layout_height="56dp"
+                    android:src="@drawable/ic_power"/>
+                <TextView
+                    android:padding="8dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:textColor="#545454"
+                    android:text="退出登录"/>
+            </LinearLayout>
+            <ImageView
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:src="#ddd"/>
+
+            </LinearLayout>
+
+        </ScrollView>
+
+</LinearLayout>
