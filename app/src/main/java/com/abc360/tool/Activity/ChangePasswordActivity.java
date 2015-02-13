@@ -80,7 +80,7 @@ public class ChangePasswordActivity extends Activity {
                     params.put("oldpassword", md5(oldPassword1));
                     params.put("newpassword", newPassword1);
                     Log.e("密",params.toString());
-
+int yl;
                     AsyncHttpClient client = AsyncHttpClientUtils.getCasyncHttpClient(getApplicationContext());
 
                     client.post(getApplicationContext(), getApplicationContext().getString(R.string.tool_api_link) + "setPassword", params, new AsyncHttpResponseHandler() {
